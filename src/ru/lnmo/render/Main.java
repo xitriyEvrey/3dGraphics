@@ -1,16 +1,11 @@
 package ru.lnmo.render;
 
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
 
 public class Main extends JFrame {
 
@@ -21,7 +16,7 @@ public class Main extends JFrame {
         //Создаем буффер в который рисуем кадр.
         BufferedImage img = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
         //Рисуем кадр.
-        Render.render(img);
+        Render.renderLine(img, 1, 10, 2, 16, Color.BLACK);
         g.drawImage(img, 0, 0, null);
     }
 
