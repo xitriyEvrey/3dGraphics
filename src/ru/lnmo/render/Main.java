@@ -13,10 +13,17 @@ public class Main extends JFrame {
     static final int h = 1080;
 
     public static void draw(Graphics2D g) {
-        //Создаем буффер в который рисуем кадр
         BufferedImage img = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
-        //Рисуем кадр
-        Render.renderLine(img, 10, 50, 900, 1050, Color.BLACK);
+        int X = 1000;
+        int Y = 500;
+        double x = 0;
+        double y = 100;
+        double alpha = Math.PI/8;
+        for (int i = 0; i < 16; i++) {
+            Render.renderLine(img, X, Y, (int)(X + x), (int)(Y + y), Color.BLACK);
+            x = x*Math.cos(alpha) + y*Math.sin(alpha);
+            y = -x*Math.sin(alpha) + y*Math.cos(alpha);
+        }
         g.drawImage(img, 0, 0, null);
     }
 
@@ -60,3 +67,6 @@ public class Main extends JFrame {
 
     }
 }
+
+
+
