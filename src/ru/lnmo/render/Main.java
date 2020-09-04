@@ -9,14 +9,14 @@ import java.awt.image.BufferedImage;
 
 public class Main extends JFrame {
 
-    static final int w = 1366;
-    static final int h = 768;
+    static final int w = 1920;
+    static final int h = 1080;
 
     public static void draw(Graphics2D g) {
-        //Создаем буффер в который рисуем кадр.
+        //Создаем буффер в который рисуем кадр
         BufferedImage img = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
-        //Рисуем кадр.
-        Render.renderLine(img, 1, 10, 2, 16, Color.BLACK);
+        //Рисуем кадр
+        Render.renderLine(img, 10, 50, 900, 1050, Color.BLACK);
         g.drawImage(img, 0, 0, null);
     }
 
@@ -27,7 +27,7 @@ public class Main extends JFrame {
         Main jf = new Main();
         jf.setSize(w, h);//размер экрана
         jf.setUndecorated(false);//показать заголовок окна
-        jf.setTitle("Моя супер программа");
+        jf.setTitle("");
         jf.setVisible(true);
         jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         jf.createBufferStrategy(2);
