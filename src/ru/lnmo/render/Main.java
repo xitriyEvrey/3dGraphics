@@ -12,17 +12,22 @@ public class Main extends JFrame {
     static final int w = 1920;
     static final int h = 1080;
 
+    static final int k = 16;
+
     public static void draw(Graphics2D g) {
         BufferedImage img = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
         int X = 1000;
         int Y = 500;
         double x = 0;
         double y = 100;
-        double alpha = Math.PI/8;
-        for (int i = 0; i < 16; i++) {
-            Render.renderLine(img, X, Y, (int)(X + x), (int)(Y + y), Color.BLACK);
-            x = x*Math.cos(alpha) + y*Math.sin(alpha);
-            y = -x*Math.sin(alpha) + y*Math.cos(alpha);
+        double alpha = 2*Math.PI/k;
+        for (int i = 0; i < k; i++) {
+            Render.renderLine(img, X, Y, (int) (X + x), (int) (Y + y), Color.BLACK);
+            double x_ = x*Math.cos(alpha) + y*Math.sin(alpha);
+            double y_ = -x*Math.sin(alpha) + y*Math.cos(alpha);
+            x = x_;
+            y = y_;
+            g.drawImage(img, 0,0, null);
         }
         g.drawImage(img, 0, 0, null);
     }
