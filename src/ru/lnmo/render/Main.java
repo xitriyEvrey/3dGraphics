@@ -9,17 +9,17 @@ import java.awt.image.BufferedImage;
 
 public class Main extends JFrame {
 
-    static final int w = 1920;
-    static final int h = 1080;
+    static final int w = 1366;
+    static final int h = 728;
 
-    static final int k = 16;
+    static final int k = 64;
 
     public static void draw(Graphics2D g) {
         BufferedImage img = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
-        int X = 1000;
+        /*int X = 1000;
         int Y = 500;
         double x = 0;
-        double y = 100;
+        double y = 500;
         double alpha = 2*Math.PI/k;
         for (int i = 0; i < k; i++) {
             Render.renderLine(img, X, Y, (int) (X + x), (int) (Y + y), Color.BLACK);
@@ -28,7 +28,8 @@ public class Main extends JFrame {
             x = x_;
             y = y_;
             g.drawImage(img, 0,0, null);
-        }
+        }*/
+        Render.renderTriangle(img, 100, 100, 100, 200, 200, 100, Color.BLACK);
         g.drawImage(img, 0, 0, null);
     }
 
@@ -69,6 +70,7 @@ public class Main extends JFrame {
 
     //Вызывается когда клавиша отпущена пользователем, обработка события аналогична keyPressed
     public void keyReleased(KeyEvent e) {
+
 
     }
 }
