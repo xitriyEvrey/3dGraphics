@@ -6,11 +6,18 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.util.Scanner;
 
 public class Main extends JFrame {
 
     static final int w = 1366;
     static final int h = 728;
+
+    static int[][] vertex = null;
+    static int[][] normals = null;
+    static int[][] texture_coordinates = null;
+    static int[][][] triangles = null;
 
     static final int k = 64;
 
@@ -29,10 +36,15 @@ public class Main extends JFrame {
             y = y_;
             g.drawImage(img, 0,0, null);
         }*/
-        Render.renderTriangle(img, 100, 100, 100, 200, 200, 100, Color.BLACK);
+        //Render.renderTriangle(img, 100, 100, 479, 524, 275, 542, Color.BLACK);
+
         g.drawImage(img, 0, 0, null);
     }
 
+
+    static void readOBJ(){
+        Scanner s = new Scanner(new File());
+    }
 
 
     //магический код позволяющий всему работать, лучше не трогать
