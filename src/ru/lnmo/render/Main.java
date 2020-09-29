@@ -16,9 +16,12 @@ public class Main extends JFrame {
     static final int w = 1366;
     static final int h = 728;
 
-    static int[][] vertex = new int[100000][3];
-    static int[][] normals = new int[100000][3];
-    static int[][] texture_coordinates = new int[100000][2];
+    static final int X = 500;
+    static final int Y = 250;
+
+    static double[][] vertex = new double[100000][3];
+    static double[][] normals = new double[100000][3];
+    static double[][] texture_coordinates = new double[100000][2];
     static int[][][] triangles = new int[100000][3][3];
 
     static final int k = 64;
@@ -44,32 +47,32 @@ public class Main extends JFrame {
     }
 
     static void BuildArrays() throws FileNotFoundException {
-        String path = "C:/Users/Admin/Documents/forOBJReader.txt"; //путь к файлу
+        String path = "/home/student/IdeaProjects/3dGraphics_/obj"; //путь к файлу
         Scanner s = new Scanner(new File(path));
         int vertex_index = 0;
         int normals_index = 0;
         int texture_coordinates_index = 0;
         int triangles_index = 0;
-        for (int i = 0; i < 30; i++) {
+        while (s.hasNextLine()){
             String Line = s.nextLine();
             String[] arr = Line.split(" ");
             if (arr.length == 0) continue;
             String type = arr[0];
             if (type.equals("v")){
-                vertex[vertex_index][0] = Integer.parseInt(arr[1]);
-                vertex[vertex_index][1] = Integer.parseInt(arr[2]);
-                vertex[vertex_index][2] = Integer.parseInt(arr[3]);
+                vertex[vertex_index][0] = Double.parseDouble(arr[1]);
+                vertex[vertex_index][1] = Double.parseDouble(arr[2]);
+                vertex[vertex_index][2] = Double.parseDouble(arr[3]);
                 vertex_index++;
             }
             else if (type.equals("vt")){
-                texture_coordinates[texture_coordinates_index][0] = Integer.parseInt(arr[1]);
-                texture_coordinates[texture_coordinates_index][1] = Integer.parseInt(arr[2]);
+                texture_coordinates[texture_coordinates_index][0] = Double.parseDouble(arr[1]);
+                texture_coordinates[texture_coordinates_index][1] = Double.parseDouble(arr[2]);
                 texture_coordinates_index++;
             }
             else if (type.equals("vn")){
-                normals[normals_index][0] = Integer.parseInt(arr[1]);
-                normals[normals_index][1] = Integer.parseInt(arr[2]);
-                normals[normals_index][2] = Integer.parseInt(arr[3]);
+                normals[normals_index][0] = Double.parseDouble(arr[1]);
+                normals[normals_index][1] = Double.parseDouble(arr[2]);
+                normals[normals_index][2] = Double.parseDouble(arr[3]);
                 normals_index++;
             }
             else if (type.equals("f")){
@@ -92,13 +95,21 @@ public class Main extends JFrame {
         normals = Arrays.copyOf(normals, normals_index);
         texture_coordinates = Arrays.copyOf(texture_coordinates, texture_coordinates_index);
         triangles = Arrays.copyOf(triangles, triangles_index);
-
     }
 
 
     static void readOBJ(Graphics2D g, BufferedImage img) throws FileNotFoundException {
         BuildArrays();
-        System.out.println();
+        DrawOBJ(g);
+    }
+
+
+    static void DrawOBJ(Graphics2D g){
+        for (int i = 0; i < triangles.length; i++) {
+            g.drawLine((int) vertex[triangles[i][0][0] - 1][0] + X, (int) vertex[triangles[i][0][0] - 1][1] + Y, (int) vertex[triangles[i][1][0] - 1][0] + X, (int) vertex[triangles[i][1][0] - 1][1] + Y);
+            g.drawLine((int) vertex[triangles[i][1][0] - 1][0] + X, (int) vertex[triangles[i][1][0] - 1][1] + Y, (int) vertex[triangles[i][2][0] - 1][0] + X, (int) vertex[triangles[i][2][0] - 1][1] + Y);
+            g.drawLine((int) vertex[triangles[i][2][0] - 1][0] + X, (int) vertex[triangles[i][2][0] - 1][1] + Y, (int) vertex[triangles[i][0][0] - 1][0] + X, (int) vertex[triangles[i][0][0] - 1][1] + Y);
+        }
     }
 
 
