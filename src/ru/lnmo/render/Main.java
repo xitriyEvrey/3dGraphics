@@ -28,19 +28,19 @@ public class Main extends JFrame {
 
     public static void draw(Graphics2D g) throws FileNotFoundException {
         BufferedImage img = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
-        /*int X = 1000;
-        int Y = 500;
-        double x = 0;
-        double y = 500;
-        double alpha = 2*Math.PI/k;
-        for (int i = 0; i < k; i++) {
-            Render.renderLine(img, X, Y, (int) (X + x), (int) (Y + y), Color.BLACK);
-            double x_ = x*Math.cos(alpha) + y*Math.sin(alpha);
-            double y_ = -x*Math.sin(alpha) + y*Math.cos(alpha);
-            x = x_;
-            y = y_;
-            g.drawImage(img, 0,0, null);
-        }*/
+//        int X = 1000;
+//        int Y = 500;
+//        double x = 0;
+//        double y = 200;
+//        double alpha = 2*Math.PI/k;
+//        for (int i = 0; i < k; i++) {
+//            Render.renderLine(img, X, Y, (int) (X + x), (int) (Y + y), Color.BLACK);
+//            double x_ = x*Math.cos(alpha) + y*Math.sin(alpha);
+//            double y_ = -x*Math.sin(alpha) + y*Math.cos(alpha);
+//            x = x_;
+//            y = y_;
+//            g.drawImage(img, 0,0, null);
+//        }
         //Render.renderTriangle(img, 100, 100, 479, 524, 275, 542, Color.BLACK);
         readOBJ(g, img);
         g.drawImage(img, 0, 0, null);

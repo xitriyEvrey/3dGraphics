@@ -29,6 +29,27 @@ public class Render {
         }
     }
 
+    public static void renderOBJLine(BufferedImage img, int x1, int y1, int x2, int y2, double A, double B) {
+        int A_ = 0;
+        int B_ = 0;
+        int dx = Math.abs(x2 - x1);
+        int dy = Math.abs(y2 - y1);
+        img.setRGB(x1, y1, (int) A);
+        img.setRGB(x2, y2, (int) B);
+        for (int x = Math.min(x1, x2) + 1; x <= Math.max(x1, x2); x++) {
+            for (int y = Math.min(y1, y2) + 1; y <= Math.max(y1, y2); y++) {
+                if (dx > dy) {
+                    img.setRGB(x, ((x - x1) * (y2 - y1) / (x2 - x1)) + y1, (int) (A - (x - Math.min(x1, x2)) * (A-B)/(Math.abs(x1 - x2))));
+                } else {
+                    img.setRGB(((y - y1) * (x2 - x1) / (y2 - y1)) + x1, y, (int) (A - (y - Math.min(y1, y2)) * (A-B)/(Math.abs(y1 - y2))));
+                }
+            }
+        }
+    }
+
+
+
+
     public static void renderTriangle(BufferedImage img, int x1, int y1, int x2, int y2, int x3, int y3, Color color){
        Vector2D AB = new Vector2D(x2, y2).sum(new Vector2D(x1, y1).multSc(-1));
        Vector2D AC = new Vector2D(x3, y3).sum(new Vector2D(x1, y1).multSc(-1));
