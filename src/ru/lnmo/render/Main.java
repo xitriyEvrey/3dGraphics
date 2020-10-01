@@ -26,6 +26,7 @@ public class Main extends JFrame {
     static final int X = 500;
     static final int Y = 250;
 
+
     static double[][] vertex = new double[100000][3];
     static double[][] normals = new double[100000][3];
     static double[][] texture_coordinates = new double[100000][2];
@@ -49,12 +50,13 @@ public class Main extends JFrame {
 //            g.drawImage(img, 0,0, null);
 //        }
         //Render.renderTriangle(img, 100, 100, 479, 524, 275, 542, Color.BLACK);
-        readOBJ(g, img);
+        readOBJ();
+        renderOBJ(g, img);
         g.drawImage(img, 0, 0, null);
     }
 
     static void BuildArrays() throws FileNotFoundException {
-        String path = "/home/student/IdeaProjects/3dGraphics_/obj"; //путь к файлу
+        String path = "C:/Users/Admin/IdeaProjects/3dGraphics/uaz.obj"; //путь к файлу
         Scanner s = new Scanner(new File(path));
         int vertex_index = 0;
         int normals_index = 0;
@@ -105,18 +107,29 @@ public class Main extends JFrame {
     }
 
 
-    static void readOBJ(Graphics2D g, BufferedImage img) throws FileNotFoundException {
+    static void readOBJ() throws FileNotFoundException {
         BuildArrays();
-        DrawOBJ(g);
     }
 
 
-    static void DrawOBJ(Graphics2D g){
-        for (int i = 0; i < triangles.length; i++) {
+    static BufferedImage renderOBJ(Graphics2D g, BufferedImage img){
+        /*for (int i = 0; i < triangles.length; i++) {
             g.drawLine((int) vertex[triangles[i][0][0] - 1][0] + X, (int) vertex[triangles[i][0][0] - 1][1] + Y, (int) vertex[triangles[i][1][0] - 1][0] + X, (int) vertex[triangles[i][1][0] - 1][1] + Y);
             g.drawLine((int) vertex[triangles[i][1][0] - 1][0] + X, (int) vertex[triangles[i][1][0] - 1][1] + Y, (int) vertex[triangles[i][2][0] - 1][0] + X, (int) vertex[triangles[i][2][0] - 1][1] + Y);
             g.drawLine((int) vertex[triangles[i][2][0] - 1][0] + X, (int) vertex[triangles[i][2][0] - 1][1] + Y, (int) vertex[triangles[i][0][0] - 1][0] + X, (int) vertex[triangles[i][0][0] - 1][1] + Y);
+        }*/
+
+        Vector light = new Vector(new double[]{0.00032, 0.00021, 0.00075});
+        for (int i = 0; i < triangles.length; i++) {
+            Render.renderOBJTriangle(img,
+                    (int) vertex[triangles[i][0][0] - 1][0] + X, (int) vertex[triangles[i][0][0] - 1][1] + Y,
+                    (int) vertex[triangles[i][1][0] - 1][0] + X, (int) vertex[triangles[i][1][0] - 1][1] + Y,
+                    (int) vertex[triangles[i][2][0] - 1][0] + X, (int) vertex[triangles[i][2][0] - 1][1] + Y,
+                    light.scProd(new Vector(new double[]{normals[triangles[i][0][2] - 1][0], normals[triangles[i][0][2] - 1][1], normals[triangles[i][0][2] - 1][2]})),
+                    light.scProd(new Vector(new double[]{normals[triangles[i][1][2] - 1][0], normals[triangles[i][1][2] - 1][1], normals[triangles[i][1][2] - 1][2]})),
+                    light.scProd(new Vector(new double[]{normals[triangles[i][2][2] - 1][0], normals[triangles[i][2][2] - 1][1], normals[triangles[i][2][2] - 1][2]})));
         }
+        return img;
     }
 
 
