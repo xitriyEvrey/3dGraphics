@@ -12,19 +12,14 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 
-// НОРМАЛИ В OBJ
-// считаем скалярное произведение нормали с вектором освещения для каждой вершины треугольника
-// для произвольной точки внутри треугольника счиаем барицентрические координаты u и v
-// X - среднее арифметическое чисел, получившихся как скалярное произведение в каждой вершине
-// устанавливаем для точки цвет (X*u*255, X*v*255, X*(1-u-v)*255)
 
 public class Main extends JFrame {
 
-    static final int w = 1366;
-    static final int h = 728;
+    static final int w = 1920;
+    static final int h = 1080;
 
-    static final int X = 500;
-    static final int Y = 250;
+    static final int X = 750;
+    static final int Y = 500;
 
 
     static double[][] vertex = new double[100000][3];
@@ -56,7 +51,7 @@ public class Main extends JFrame {
     }
 
     static void BuildArrays() throws FileNotFoundException {
-        String path = "C:/Users/Admin/IdeaProjects/3dGraphics/uaz.obj"; //путь к файлу
+        String path = "/home/student/IdeaProjects/3dGraphics_/obj"; //путь к файлу
         Scanner s = new Scanner(new File(path));
         int vertex_index = 0;
         int normals_index = 0;
@@ -113,24 +108,30 @@ public class Main extends JFrame {
 
 
     static BufferedImage renderOBJ(Graphics2D g, BufferedImage img){
-        /*for (int i = 0; i < triangles.length; i++) {
-            g.drawLine((int) vertex[triangles[i][0][0] - 1][0] + X, (int) vertex[triangles[i][0][0] - 1][1] + Y, (int) vertex[triangles[i][1][0] - 1][0] + X, (int) vertex[triangles[i][1][0] - 1][1] + Y);
-            g.drawLine((int) vertex[triangles[i][1][0] - 1][0] + X, (int) vertex[triangles[i][1][0] - 1][1] + Y, (int) vertex[triangles[i][2][0] - 1][0] + X, (int) vertex[triangles[i][2][0] - 1][1] + Y);
-            g.drawLine((int) vertex[triangles[i][2][0] - 1][0] + X, (int) vertex[triangles[i][2][0] - 1][1] + Y, (int) vertex[triangles[i][0][0] - 1][0] + X, (int) vertex[triangles[i][0][0] - 1][1] + Y);
-        }*/
-
-        Vector light = new Vector(new double[]{0.00032, 0.00021, 0.00075});
+        Vector light = new Vector(new double[]{10, 10, 10});
+        Vector sight = new Vector(new double[]{0, 0, -1});
         for (int i = 0; i < triangles.length; i++) {
-            Render.renderOBJTriangle(img,
-                    (int) vertex[triangles[i][0][0] - 1][0] + X, (int) vertex[triangles[i][0][0] - 1][1] + Y,
-                    (int) vertex[triangles[i][1][0] - 1][0] + X, (int) vertex[triangles[i][1][0] - 1][1] + Y,
-                    (int) vertex[triangles[i][2][0] - 1][0] + X, (int) vertex[triangles[i][2][0] - 1][1] + Y,
-                    light.scProd(new Vector(new double[]{normals[triangles[i][0][2] - 1][0], normals[triangles[i][0][2] - 1][1], normals[triangles[i][0][2] - 1][2]})),
-                    light.scProd(new Vector(new double[]{normals[triangles[i][1][2] - 1][0], normals[triangles[i][1][2] - 1][1], normals[triangles[i][1][2] - 1][2]})),
-                    light.scProd(new Vector(new double[]{normals[triangles[i][2][2] - 1][0], normals[triangles[i][2][2] - 1][1], normals[triangles[i][2][2] - 1][2]})));
+            Vector A = new Vector(new double[]{vertex[triangles[i][0][0] - 1][0], vertex[triangles[i][0][0] - 1][1], vertex[triangles[i][0][0] - 1][2]});
+            Vector B = new Vector(new double[]{vertex[triangles[i][1][0] - 1][0], vertex[triangles[i][1][0] - 1][1], vertex[triangles[i][1][0] - 1][2]});
+            Vector C = new Vector(new double[]{vertex[triangles[i][2][0] - 1][0], vertex[triangles[i][2][0] - 1][1], vertex[triangles[i][2][0] - 1][2]});
+            Vector AB = B.sum(A.scMult(-1));
+            Vector AC = C.sum(A.scMult(-1));
+            Vector normal = AB.CrossProd(AC);
+            if (normal.scProd(sight) > 0){
+                Render.renderOBJTriangle(img,
+                        (int) vertex[triangles[i][0][0] - 1][0] + X, (int) vertex[triangles[i][0][0] - 1][1] + Y,
+                        (int) vertex[triangles[i][1][0] - 1][0] + X, (int) vertex[triangles[i][1][0] - 1][1] + Y,
+                        (int) vertex[triangles[i][2][0] - 1][0] + X, (int) vertex[triangles[i][2][0] - 1][1] + Y,
+                        light.scProd(new Vector(new double[]{normals[triangles[i][0][2] - 1][0], normals[triangles[i][0][2] - 1][1], normals[triangles[i][0][2] - 1][2]})),
+                        light.scProd(new Vector(new double[]{normals[triangles[i][1][2] - 1][0], normals[triangles[i][1][2] - 1][1], normals[triangles[i][1][2] - 1][2]})),
+                        light.scProd(new Vector(new double[]{normals[triangles[i][2][2] - 1][0], normals[triangles[i][2][2] - 1][1], normals[triangles[i][2][2] - 1][2]})));
+            } else {
+                System.out.println("rejected " + i);
+            }
         }
         return img;
     }
+
 
 
     //магический код позволяющий всему работать, лучше не трогать
