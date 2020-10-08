@@ -63,7 +63,7 @@ public class Render {
                 double u = (V.get(0)/V.get(2));
                 double v = (V.get(1)/V.get(2));
                 if (u + v <= 1 && u >= 0 && v >= 0){
-                    double l = l1*u + l2*v + l3*(1-u-v);
+                    double l = (l1*u + l2*v + l3*(1-u-v));
                     img.setRGB(x, y, (int) l);
                 }
             }
@@ -71,6 +71,7 @@ public class Render {
         renderLine(img, x1, y1, x2, y2, Color.BLACK);
         renderLine(img, x2, y2, x3, y3, Color.BLACK);
         renderLine(img, x3, y3, x1, y1, Color.BLACK);
+        System.out.println("(" + x1 + ", " + y1 + "), " + "(" + x2 + ", " + y2 + "), " + "(" + x3 + ", " + y3 + ")");
     }
 
 }

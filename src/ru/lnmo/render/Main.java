@@ -1,6 +1,5 @@
 package ru.lnmo.render;
 
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -15,11 +14,15 @@ import java.util.Scanner;
 
 public class Main extends JFrame {
 
-    static final int w = 1920;
+    static final int w = 1929;
     static final int h = 1080;
 
-    static final int X = 750;
+    static final int X = 700;
     static final int Y = 500;
+
+    static final double alpha = 1*(Math.PI/180);
+    static final double beta = 0*(Math.PI/180);
+    static final double gamma = 0*(Math.PI/180);
 
 
     static double[][] vertex = new double[100000][3];
@@ -27,7 +30,7 @@ public class Main extends JFrame {
     static double[][] texture_coordinates = new double[100000][2];
     static int[][][] triangles = new int[100000][3][3];
 
-    static final int k = 64;
+//    static final int k = 64;
 
     public static void draw(Graphics2D g) throws FileNotFoundException {
         BufferedImage img = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
@@ -46,12 +49,13 @@ public class Main extends JFrame {
 //        }
         //Render.renderTriangle(img, 100, 100, 479, 524, 275, 542, Color.BLACK);
         readOBJ();
+        OBJrotate();
         renderOBJ(g, img);
         g.drawImage(img, 0, 0, null);
     }
 
     static void BuildArrays() throws FileNotFoundException {
-        String path = "/home/student/IdeaProjects/3dGraphics_/obj"; //путь к файлу
+        String path = "/home/student/IdeaProjects/3dGraphics/obj"; //путь к файлу
         Scanner s = new Scanner(new File(path));
         int vertex_index = 0;
         int normals_index = 0;
@@ -101,6 +105,38 @@ public class Main extends JFrame {
         triangles = Arrays.copyOf(triangles, triangles_index);
     }
 
+    static void OBJrotate(){
+        Matrix Mx = new Matrix(new double[][]
+                       {{1,               0,                0},
+                        {0, Math.cos(alpha), -Math.sin(alpha)},
+                        {0, Math.sin(alpha), Math.cos(alpha)}});
+        Matrix My = new Matrix(new double[][]
+                       {{Math.cos(beta),  0, Math.sin(beta)},
+                        {0,               1,              0},
+                        {-Math.sin(beta), 0, Math.cos(beta)}});
+        Matrix Mz = new Matrix(new double[][]
+                       {{Math.cos(gamma), -Math.sin(gamma), 0},
+                        {Math.sin(gamma), Math.cos(gamma),  0},
+                        {0,               0,                 1}});
+        Matrix M = Mx.mult(My).mult(Mz);
+        for (int i = 0; i < vertex.length; i++) {
+            Vector V = new Vector(new double[]{vertex[i][0], vertex[i][1], vertex[i][2]});
+            Matrix Mv = V.toMatrix();
+            Matrix Mv_rotated = M.mult(Mv);
+            vertex[i][0] = Mv_rotated.get(0, 0);
+            vertex[i][1] = Mv_rotated.get(1, 0);
+            vertex[i][2] = Mv_rotated.get(2, 0);
+        }
+        for (int i = 0; i < normals.length; i++) {
+            Vector V = new Vector(new double[]{normals[i][0], normals[i][1], normals[i][2]});
+            Matrix Mv = V.toMatrix();
+            Matrix Mv_rotated = M.mult(Mv);
+            normals[i][0] = Mv_rotated.get(0, 0);
+            normals[i][1] = Mv_rotated.get(1, 0);
+            normals[i][2] = Mv_rotated.get(2, 0);
+        }
+    }
+
 
     static void readOBJ() throws FileNotFoundException {
         BuildArrays();
@@ -117,7 +153,7 @@ public class Main extends JFrame {
             Vector AB = B.sum(A.scMult(-1));
             Vector AC = C.sum(A.scMult(-1));
             Vector normal = AB.CrossProd(AC);
-            if (normal.scProd(sight) > 0){
+            if (/*normal.scProd(sight) > 0*/ true){
                 Render.renderOBJTriangle(img,
                         (int) vertex[triangles[i][0][0] - 1][0] + X, (int) vertex[triangles[i][0][0] - 1][1] + Y,
                         (int) vertex[triangles[i][1][0] - 1][0] + X, (int) vertex[triangles[i][1][0] - 1][1] + Y,
@@ -125,8 +161,6 @@ public class Main extends JFrame {
                         light.scProd(new Vector(new double[]{normals[triangles[i][0][2] - 1][0], normals[triangles[i][0][2] - 1][1], normals[triangles[i][0][2] - 1][2]})),
                         light.scProd(new Vector(new double[]{normals[triangles[i][1][2] - 1][0], normals[triangles[i][1][2] - 1][1], normals[triangles[i][1][2] - 1][2]})),
                         light.scProd(new Vector(new double[]{normals[triangles[i][2][2] - 1][0], normals[triangles[i][2][2] - 1][1], normals[triangles[i][2][2] - 1][2]})));
-            } else {
-                System.out.println("rejected " + i);
             }
         }
         return img;
