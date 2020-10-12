@@ -71,7 +71,7 @@ public class Render {
         renderLine(img, x1, y1, x2, y2, Color.BLACK);
         renderLine(img, x2, y2, x3, y3, Color.BLACK);
         renderLine(img, x3, y3, x1, y1, Color.BLACK);
-        System.out.println("(" + x1 + ", " + y1 + "), " + "(" + x2 + ", " + y2 + "), " + "(" + x3 + ", " + y3 + ")");
+//        System.out.println("(" + x1 + ", " + y1 + "), " + "(" + x2 + ", " + y2 + "), " + "(" + x3 + ", " + y3 + ")");
     }
 
 }

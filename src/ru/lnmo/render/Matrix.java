@@ -26,7 +26,8 @@ public class Matrix {
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < M.n; j++) {
                 for (int k = 0; k < n; k++) {
-                    res.set(i, j, get(i, j) + get(i, k)*M.get(k, j));
+                    double oldValue = res.get(i, j);
+                    res.set(i, j, oldValue + get(i, k)*M.get(k, j));
                 }
             }
         }

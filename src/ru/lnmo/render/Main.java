@@ -14,13 +14,13 @@ import java.util.Scanner;
 
 public class Main extends JFrame {
 
-    static final int w = 1929;
+    static final int w = 1920;
     static final int h = 1080;
 
-    static final int X = 700;
-    static final int Y = 500;
+    static final int X = 800;
+    static final int Y = 600;
 
-    static final double alpha = 1*(Math.PI/180);
+    static final double alpha = 0*(Math.PI/180);
     static final double beta = 0*(Math.PI/180);
     static final double gamma = 0*(Math.PI/180);
 
@@ -49,13 +49,30 @@ public class Main extends JFrame {
 //        }
         //Render.renderTriangle(img, 100, 100, 479, 524, 275, 542, Color.BLACK);
         readOBJ();
+//        Matrix M = new Matrix(new double[][]{{11, 3, 52}, {3, 9, 7}, {-21, 8, 15}}).mult(new Matrix(new double[][]{{-4, 16, 93}, {5, 76, -10}, {36, -7, 9}}));
+//        PrintMatrix(M);
         OBJrotate();
         renderOBJ(g, img);
         g.drawImage(img, 0, 0, null);
     }
 
+    static void PrintMatrix(Matrix M){
+        for (int i = 0; i < M.m; i++) {
+            for (int j = 0; j < M.n; j++) {
+                System.out.print(M.get(i, j) + " ");
+            }
+            System.out.println();
+        }
+        System.out.println();
+        System.out.println();
+        System.out.println();
+        System.out.println();
+        System.out.println();
+        System.out.println();
+    }
+
     static void BuildArrays() throws FileNotFoundException {
-        String path = "/home/student/IdeaProjects/3dGraphics/obj"; //путь к файлу
+        String path = "C:/Users/Admin/IdeaProjects/3dGraphics/uaz.obj"; //путь к файлу
         Scanner s = new Scanner(new File(path));
         int vertex_index = 0;
         int normals_index = 0;
@@ -153,7 +170,7 @@ public class Main extends JFrame {
             Vector AB = B.sum(A.scMult(-1));
             Vector AC = C.sum(A.scMult(-1));
             Vector normal = AB.CrossProd(AC);
-            if (/*normal.scProd(sight) > 0*/ true){
+            if (normal.scProd(sight) > 0){
                 Render.renderOBJTriangle(img,
                         (int) vertex[triangles[i][0][0] - 1][0] + X, (int) vertex[triangles[i][0][0] - 1][1] + Y,
                         (int) vertex[triangles[i][1][0] - 1][0] + X, (int) vertex[triangles[i][1][0] - 1][1] + Y,
