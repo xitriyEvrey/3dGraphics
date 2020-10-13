@@ -50,6 +50,19 @@ public class Vector {
         return null;
     }
 
+    Vector normalize(){
+        Vector res = new Vector(new double[dimension]);
+        double length = 0;
+        for (int i = 0; i < dimension; i++) {
+            length += Math.pow(get(i), 2);
+        }
+        length = Math.sqrt(length);
+        for (int i = 0; i < dimension; i++) {
+            res.set(i, get(i)/length);
+        }
+        return res;
+    }
+
     Matrix toMatrix(){
         Matrix res = new Matrix(new double[dimension][1]);
         for (int i = 0; i < dimension; i++) {

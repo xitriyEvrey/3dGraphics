@@ -20,9 +20,9 @@ public class Main extends JFrame {
     static final int X = 800;
     static final int Y = 600;
 
-    static final double alpha = 0*(Math.PI/180);
-    static final double beta = 0*(Math.PI/180);
-    static final double gamma = 0*(Math.PI/180);
+    static final double alpha = 60*(Math.PI/180);
+    static final double beta = 60*(Math.PI/180);
+    static final double gamma = 180*(Math.PI/180);
 
 
     static double[][] vertex = new double[100000][3];
@@ -72,7 +72,7 @@ public class Main extends JFrame {
     }
 
     static void BuildArrays() throws FileNotFoundException {
-        String path = "C:/Users/Admin/IdeaProjects/3dGraphics/uaz.obj"; //путь к файлу
+        String path = "/home/student/IdeaProjects/3dGraphics_/obj"; //путь к файлу
         Scanner s = new Scanner(new File(path));
         int vertex_index = 0;
         int normals_index = 0;
@@ -163,22 +163,22 @@ public class Main extends JFrame {
     static BufferedImage renderOBJ(Graphics2D g, BufferedImage img){
         Vector light = new Vector(new double[]{10, 10, 10});
         Vector sight = new Vector(new double[]{0, 0, -1});
+        double[][] zBuffer = new double[w][h];
         for (int i = 0; i < triangles.length; i++) {
-            Vector A = new Vector(new double[]{vertex[triangles[i][0][0] - 1][0], vertex[triangles[i][0][0] - 1][1], vertex[triangles[i][0][0] - 1][2]});
-            Vector B = new Vector(new double[]{vertex[triangles[i][1][0] - 1][0], vertex[triangles[i][1][0] - 1][1], vertex[triangles[i][1][0] - 1][2]});
-            Vector C = new Vector(new double[]{vertex[triangles[i][2][0] - 1][0], vertex[triangles[i][2][0] - 1][1], vertex[triangles[i][2][0] - 1][2]});
-            Vector AB = B.sum(A.scMult(-1));
-            Vector AC = C.sum(A.scMult(-1));
-            Vector normal = AB.CrossProd(AC);
-            if (normal.scProd(sight) > 0){
+//            Vector A = new Vector(new double[]{vertex[triangles[i][0][0] - 1][0], vertex[triangles[i][0][0] - 1][1], vertex[triangles[i][0][0] - 1][2]});
+//            Vector B = new Vector(new double[]{vertex[triangles[i][1][0] - 1][0], vertex[triangles[i][1][0] - 1][1], vertex[triangles[i][1][0] - 1][2]});
+//            Vector C = new Vector(new double[]{vertex[triangles[i][2][0] - 1][0], vertex[triangles[i][2][0] - 1][1], vertex[triangles[i][2][0] - 1][2]});
+//            Vector AB = B.sum(A.scMult(-1));
+//            Vector AC = C.sum(A.scMult(-1));
+//            Vector normal = AB.CrossProd(AC).normalize();
                 Render.renderOBJTriangle(img,
-                        (int) vertex[triangles[i][0][0] - 1][0] + X, (int) vertex[triangles[i][0][0] - 1][1] + Y,
-                        (int) vertex[triangles[i][1][0] - 1][0] + X, (int) vertex[triangles[i][1][0] - 1][1] + Y,
-                        (int) vertex[triangles[i][2][0] - 1][0] + X, (int) vertex[triangles[i][2][0] - 1][1] + Y,
+                        vertex[triangles[i][0][0] - 1][0], vertex[triangles[i][0][0] - 1][1], vertex[triangles[i][0][0] - 1][2],
+                        vertex[triangles[i][1][0] - 1][0], vertex[triangles[i][1][0] - 1][1], vertex[triangles[i][1][0] - 1][2],
+                        vertex[triangles[i][2][0] - 1][0], vertex[triangles[i][2][0] - 1][1], vertex[triangles[i][2][0] - 1][2],
                         light.scProd(new Vector(new double[]{normals[triangles[i][0][2] - 1][0], normals[triangles[i][0][2] - 1][1], normals[triangles[i][0][2] - 1][2]})),
                         light.scProd(new Vector(new double[]{normals[triangles[i][1][2] - 1][0], normals[triangles[i][1][2] - 1][1], normals[triangles[i][1][2] - 1][2]})),
-                        light.scProd(new Vector(new double[]{normals[triangles[i][2][2] - 1][0], normals[triangles[i][2][2] - 1][1], normals[triangles[i][2][2] - 1][2]})));
-            }
+                        light.scProd(new Vector(new double[]{normals[triangles[i][2][2] - 1][0], normals[triangles[i][2][2] - 1][1], normals[triangles[i][2][2] - 1][2]})),
+                        sight, X, Y, zBuffer);
         }
         return img;
     }
