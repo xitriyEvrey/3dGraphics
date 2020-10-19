@@ -25,6 +25,7 @@ public class Main extends JFrame {
     static final double gamma = 180*(Math.PI/180);
 
 
+
     static double[][] vertex = new double[100000][3];
     static double[][] normals = new double[100000][3];
     static double[][] texture_coordinates = new double[100000][2];
@@ -51,7 +52,6 @@ public class Main extends JFrame {
         readOBJ();
 //        Matrix M = new Matrix(new double[][]{{11, 3, 52}, {3, 9, 7}, {-21, 8, 15}}).mult(new Matrix(new double[][]{{-4, 16, 93}, {5, 76, -10}, {36, -7, 9}}));
 //        PrintMatrix(M);
-        OBJrotate();
         renderOBJ(g, img);
         g.drawImage(img, 0, 0, null);
     }
@@ -72,7 +72,7 @@ public class Main extends JFrame {
     }
 
     static void BuildArrays() throws FileNotFoundException {
-        String path = "/home/student/IdeaProjects/3dGraphics_/obj"; //путь к файлу
+        String path = "C:/Users/Admin/IdeaProjects/3dGraphics/uaz.obj"; //путь к файлу
         Scanner s = new Scanner(new File(path));
         int vertex_index = 0;
         int normals_index = 0;
@@ -122,38 +122,6 @@ public class Main extends JFrame {
         triangles = Arrays.copyOf(triangles, triangles_index);
     }
 
-    static void OBJrotate(){
-        Matrix Mx = new Matrix(new double[][]
-                       {{1,               0,                0},
-                        {0, Math.cos(alpha), -Math.sin(alpha)},
-                        {0, Math.sin(alpha), Math.cos(alpha)}});
-        Matrix My = new Matrix(new double[][]
-                       {{Math.cos(beta),  0, Math.sin(beta)},
-                        {0,               1,              0},
-                        {-Math.sin(beta), 0, Math.cos(beta)}});
-        Matrix Mz = new Matrix(new double[][]
-                       {{Math.cos(gamma), -Math.sin(gamma), 0},
-                        {Math.sin(gamma), Math.cos(gamma),  0},
-                        {0,               0,                 1}});
-        Matrix M = Mx.mult(My).mult(Mz);
-        for (int i = 0; i < vertex.length; i++) {
-            Vector V = new Vector(new double[]{vertex[i][0], vertex[i][1], vertex[i][2]});
-            Matrix Mv = V.toMatrix();
-            Matrix Mv_rotated = M.mult(Mv);
-            vertex[i][0] = Mv_rotated.get(0, 0);
-            vertex[i][1] = Mv_rotated.get(1, 0);
-            vertex[i][2] = Mv_rotated.get(2, 0);
-        }
-        for (int i = 0; i < normals.length; i++) {
-            Vector V = new Vector(new double[]{normals[i][0], normals[i][1], normals[i][2]});
-            Matrix Mv = V.toMatrix();
-            Matrix Mv_rotated = M.mult(Mv);
-            normals[i][0] = Mv_rotated.get(0, 0);
-            normals[i][1] = Mv_rotated.get(1, 0);
-            normals[i][2] = Mv_rotated.get(2, 0);
-        }
-    }
-
 
     static void readOBJ() throws FileNotFoundException {
         BuildArrays();
@@ -161,24 +129,23 @@ public class Main extends JFrame {
 
 
     static BufferedImage renderOBJ(Graphics2D g, BufferedImage img){
-        Vector light = new Vector(new double[]{10, 10, 10});
+        Vector light = new Vector(new double[]{100, 100, 100});
         Vector sight = new Vector(new double[]{0, 0, -1});
         double[][] zBuffer = new double[w][h];
+        for (int i = 0; i < zBuffer.length; i++) {
+            for (int j = 0; j < zBuffer[0].length; j++) {
+                zBuffer[i][j] = Integer.MAX_VALUE;
+            }
+        }
         for (int i = 0; i < triangles.length; i++) {
-//            Vector A = new Vector(new double[]{vertex[triangles[i][0][0] - 1][0], vertex[triangles[i][0][0] - 1][1], vertex[triangles[i][0][0] - 1][2]});
-//            Vector B = new Vector(new double[]{vertex[triangles[i][1][0] - 1][0], vertex[triangles[i][1][0] - 1][1], vertex[triangles[i][1][0] - 1][2]});
-//            Vector C = new Vector(new double[]{vertex[triangles[i][2][0] - 1][0], vertex[triangles[i][2][0] - 1][1], vertex[triangles[i][2][0] - 1][2]});
-//            Vector AB = B.sum(A.scMult(-1));
-//            Vector AC = C.sum(A.scMult(-1));
-//            Vector normal = AB.CrossProd(AC).normalize();
                 Render.renderOBJTriangle(img,
                         vertex[triangles[i][0][0] - 1][0], vertex[triangles[i][0][0] - 1][1], vertex[triangles[i][0][0] - 1][2],
                         vertex[triangles[i][1][0] - 1][0], vertex[triangles[i][1][0] - 1][1], vertex[triangles[i][1][0] - 1][2],
                         vertex[triangles[i][2][0] - 1][0], vertex[triangles[i][2][0] - 1][1], vertex[triangles[i][2][0] - 1][2],
-                        light.scProd(new Vector(new double[]{normals[triangles[i][0][2] - 1][0], normals[triangles[i][0][2] - 1][1], normals[triangles[i][0][2] - 1][2]})),
-                        light.scProd(new Vector(new double[]{normals[triangles[i][1][2] - 1][0], normals[triangles[i][1][2] - 1][1], normals[triangles[i][1][2] - 1][2]})),
-                        light.scProd(new Vector(new double[]{normals[triangles[i][2][2] - 1][0], normals[triangles[i][2][2] - 1][1], normals[triangles[i][2][2] - 1][2]})),
-                        sight, X, Y, zBuffer);
+                        new Vector(new double[]{normals[triangles[i][0][2] - 1][0], normals[triangles[i][0][2] - 1][1], normals[triangles[i][0][2] - 1][2]}),
+                        new Vector(new double[]{normals[triangles[i][1][2] - 1][0], normals[triangles[i][1][2] - 1][1], normals[triangles[i][1][2] - 1][2]}),
+                        new Vector(new double[]{normals[triangles[i][2][2] - 1][0], normals[triangles[i][2][2] - 1][1], normals[triangles[i][2][2] - 1][2]}),
+                        sight, X, Y, zBuffer, light, alpha, beta, gamma);
         }
         return img;
     }
