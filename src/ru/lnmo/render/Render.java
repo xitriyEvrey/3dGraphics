@@ -71,7 +71,7 @@ public class Render {
 //        }
 //    }
 
-    public static void renderOBJTriangle(BufferedImage img, double x1, double y1, double z1, double x2, double y2, double z2, double x3, double y3, double z3, Vector normal1, Vector normal2, Vector normal3, Vector sight, int moveX, int moveY, double[][] zBuffer, Vector light, double alpha, double beta, double gamma, BufferedImage texture, int tx1, int ty1, int tx2, int ty2, int tx3, int ty3){
+    public static void renderOBJTriangle(BufferedImage img, double x1, double y1, double z1, double x2, double y2, double z2, double x3, double y3, double z3, Vector normal1, Vector normal2, Vector normal3, Vector sight, int moveX, int moveY, double[][] zBuffer, Vector light, double alpha, double beta, double gamma, BufferedImage texture, double tx1, double ty1, double tx2, double ty2, double tx3, double ty3){
         Vector v1 = new Vector(new double[]{x1, y1, z1});
         Vector v2 = new Vector(new double[]{x2, y2, z2});
         Vector v3 = new Vector(new double[]{x3, y3, z3});
@@ -114,9 +114,12 @@ public class Render {
                     double l = (l1*(1-u-v) + l2*u + l3*v);
                     l = Math.max(0, l);
                     double z = (z1*(1-u-v) + z2*u + z3*v);
+                    double tx = (tx1*(1-u-v) + tx2*u + tx3*v)*texture.getWidth();
+                    double ty = (ty1*(1-u-v) + ty2*u + ty3*v)*texture.getHeight();
                     if (z < zBuffer[x][y]/* && color > 0*/) {
 //                        img.setRGB(x, y, new Color((int) (color*255), (int) (color*255), (int) (color*255)).getRGB());
-                        img.setRGB(x, y, new Color((int) (l*255), (int) (l*255), (int) (l*255)).getRGB());
+                        img.setRGB(x, y, texture.getRGB((int) tx, (int) ty));
+//                        img.setRGB(x, y, new Color((int) (l*255), (int) (l*255), (int) (l*255)).getRGB());
                         zBuffer[x][y] = z;
                     }
                 }

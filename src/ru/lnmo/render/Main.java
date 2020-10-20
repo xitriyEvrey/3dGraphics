@@ -23,7 +23,7 @@ public class Main extends JFrame {
     static final int Y = 600;
 
     static final double alpha = 30*(Math.PI/180);
-    static final double beta = -60*(Math.PI/180);
+    static final double beta = -120*(Math.PI/180);
     static final double gamma = 180*(Math.PI/180);
 
 
@@ -36,7 +36,7 @@ public class Main extends JFrame {
     static BufferedImage texture = null;
     static {
         try {
-            texture = ImageIO.read(new File("/home/student/IdeaProjects/3dGraphics_/uaz_med_white_d.png"));
+            texture = ImageIO.read(new File("C:/Users/Admin/IdeaProjects/3dGraphics/uaz_med_white_d.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -62,12 +62,9 @@ public class Main extends JFrame {
 //        }
         //Render.renderTriangle(img, 100, 100, 479, 524, 275, 542, Color.BLACK);
         readOBJ();
-//        Matrix M = new Matrix(new double[][]{{11, 3, 52}, {3, 9, 7}, {-21, 8, 15}}).mult(new Matrix(new double[][]{{-4, 16, 93}, {5, 76, -10}, {36, -7, 9}}));
-//        PrintMatrix(M);
         renderOBJ(g, img);
         g.setColor(Color.BLACK);
         g.fillRect(0, 0, w, h);
-
         g.drawImage(img, 0, 0, null);
     }
 
@@ -87,7 +84,7 @@ public class Main extends JFrame {
     }
 
     static void BuildArrays() throws FileNotFoundException {
-        String path = "/home/student/IdeaProjects/3dGraphics_/obj"; //путь к файлу
+        String path = "C:/Users/Admin/IdeaProjects/3dGraphics/uaz.obj"; //путь к файлу
         Scanner s = new Scanner(new File(path));
         int vertex_index = 0;
         int normals_index = 0;
