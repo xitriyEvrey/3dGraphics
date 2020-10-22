@@ -22,9 +22,9 @@ public class Main extends JFrame {
     static final int X = 800;
     static final int Y = 600;
 
-    static final double alpha = 30*(Math.PI/180);
-    static final double beta = -120*(Math.PI/180);
-    static final double gamma = 180*(Math.PI/180);
+    static double alpha = -30*(Math.PI/180);
+    static double beta = 60*(Math.PI/180);
+    static double gamma = 180*(Math.PI/180);
 
 
 
@@ -36,7 +36,7 @@ public class Main extends JFrame {
     static BufferedImage texture = null;
     static {
         try {
-            texture = ImageIO.read(new File("C:/Users/Admin/IdeaProjects/3dGraphics/uaz_med_white_d.png"));
+            texture = ImageIO.read(new File("/home/student/IdeaProjects/3dGraphics/uaz_med_white_d.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -84,7 +84,7 @@ public class Main extends JFrame {
     }
 
     static void BuildArrays() throws FileNotFoundException {
-        String path = "C:/Users/Admin/IdeaProjects/3dGraphics/uaz.obj"; //путь к файлу
+        String path = "/home/student/IdeaProjects/3dGraphics/uaz.obj"; //путь к файлу
         Scanner s = new Scanner(new File(path));
         int vertex_index = 0;
         int normals_index = 0;
@@ -178,6 +178,9 @@ public class Main extends JFrame {
         jf.createBufferStrategy(2);
         //в бесконечном цикле рисуем новый кадр
         while (true) {
+            alpha += Math.PI/180;
+            beta += Math.PI/180;
+            gamma += Math.PI/180;
             long frameLength = 1000 / 60; //пытаемся работать из рассчета  60 кадров в секунду
             long start = System.currentTimeMillis();
             BufferStrategy bs = jf.getBufferStrategy();

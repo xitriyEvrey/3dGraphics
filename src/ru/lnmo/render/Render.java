@@ -115,10 +115,15 @@ public class Render {
                     l = Math.max(0, l);
                     double z = (z1*(1-u-v) + z2*u + z3*v);
                     double tx = (tx1*(1-u-v) + tx2*u + tx3*v)*texture.getWidth();
-                    double ty = (ty1*(1-u-v) + ty2*u + ty3*v)*texture.getHeight();
-                    if (z < zBuffer[x][y]/* && color > 0*/) {
+                    double ty = ((1 - (ty1*(1-u-v) + ty2*u + ty3*v)))*texture.getHeight();
+                    int textureRGB = texture.getRGB((int) tx, (int) ty);
+                    Color textureColor = new Color(textureRGB);
+                    int textureColorR = textureColor.getRed();
+                    int textureColorG = textureColor.getGreen();
+                    int textureColorB = textureColor.getBlue();
+                    if (z < zBuffer[x][y]/* && color > 0*/ && 0 <= x && x < img.getWidth() - 1 && 0 <= y && y < img.getHeight() - 1) {
 //                        img.setRGB(x, y, new Color((int) (color*255), (int) (color*255), (int) (color*255)).getRGB());
-                        img.setRGB(x, y, texture.getRGB((int) tx, (int) ty));
+                        img.setRGB(x, y, new Color((int) (l*textureColorR), (int) (l*textureColorG), (int) (l*textureColorB)).getRGB());
 //                        img.setRGB(x, y, new Color((int) (l*255), (int) (l*255), (int) (l*255)).getRGB());
                         zBuffer[x][y] = z;
                     }
