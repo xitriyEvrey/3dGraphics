@@ -22,7 +22,7 @@ public class Main extends JFrame {
     static final int X = 800;
     static final int Y = 600;
 
-    static double alpha = -30*(Math.PI/180);
+    static double alpha = 30*(Math.PI/180);
     static double beta = 60*(Math.PI/180);
     static double gamma = 180*(Math.PI/180);
 
@@ -178,9 +178,9 @@ public class Main extends JFrame {
         jf.createBufferStrategy(2);
         //в бесконечном цикле рисуем новый кадр
         while (true) {
-            alpha += Math.PI/180;
-            beta += Math.PI/180;
-            gamma += Math.PI/180;
+            alpha += 15*Math.PI/180;
+            beta += 5*Math.PI/180;
+            gamma += 10*Math.PI/180;
             long frameLength = 1000 / 60; //пытаемся работать из рассчета  60 кадров в секунду
             long start = System.currentTimeMillis();
             BufferStrategy bs = jf.getBufferStrategy();

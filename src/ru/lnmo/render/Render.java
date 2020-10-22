@@ -121,7 +121,7 @@ public class Render {
                     int textureColorR = textureColor.getRed();
                     int textureColorG = textureColor.getGreen();
                     int textureColorB = textureColor.getBlue();
-                    if (z < zBuffer[x][y]/* && color > 0*/ && 0 <= x && x < img.getWidth() - 1 && 0 <= y && y < img.getHeight() - 1) {
+                    if (0 <= x && x < img.getWidth() - 1 && 0 <= y && y < img.getHeight() - 1 && z < zBuffer[x][y]/* && color > 0*/) {
 //                        img.setRGB(x, y, new Color((int) (color*255), (int) (color*255), (int) (color*255)).getRGB());
                         img.setRGB(x, y, new Color((int) (l*textureColorR), (int) (l*textureColorG), (int) (l*textureColorB)).getRGB());
 //                        img.setRGB(x, y, new Color((int) (l*255), (int) (l*255), (int) (l*255)).getRGB());
